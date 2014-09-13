@@ -37,9 +37,11 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="RevitAPI">
       <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2014\RevitAPI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="RevitAPIUI">
       <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2014\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -61,6 +63,7 @@
     </Compile>
     <Compile Include="StartUp\StartupApp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\DroneBaseUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="DroneBase.addin">
@@ -76,6 +79,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\iconLarge.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

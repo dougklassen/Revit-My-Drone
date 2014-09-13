@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Autodesk.Revit.DB;
+using Autodesk.Revit.UI;
+
+using RevitMyDrone.DroneBase.Utils;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Autodesk.Revit.DB;
-using Autodesk.Revit.UI;
+using System.Text;
 
 namespace RevitMyDrone.DroneBase.Commands
 {
@@ -12,7 +15,27 @@ namespace RevitMyDrone.DroneBase.Commands
 	{
 		public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
 		{
-			TaskDialog.Show("For pretend", "Getting shots");
+			UIDocument uiDoc = commandData.Application.ActiveUIDocument;
+			Document dbDoc = commandData.Application.ActiveUIDocument.Document;
+
+			IEnumerable<View3D> droneViews = dbDoc.GetDroneViews();
+
+			StringBuilder msg = new StringBuilder();
+
+			if (droneViews.Count() > 0)
+			{
+				foreach (View3D shot in droneViews)
+				{
+					msg.AppendLine(shot.Name);
+				}
+
+				TaskDialog.Show("Found shots", msg.ToString()); 
+			}
+			else
+			{
+				TaskDialog.Show("Found shots", "No Drone shots found");
+				return Result.Failed;
+			}
 
 			return Result.Succeeded;
 		}
