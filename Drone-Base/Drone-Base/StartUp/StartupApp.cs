@@ -6,7 +6,7 @@ using System.Reflection;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 
-namespace Drone_Base.StartUp
+namespace RevitMyDrone.DroneBase
 {
 	public static class FileLocations
 	{
@@ -14,7 +14,7 @@ namespace Drone_Base.StartUp
 		public static String AddInDirectory;
 		public static String AssemblyName;
 		public static readonly String imperialTemplateDirectory = @"C:\ProgramData\Autodesk\RVT 2014\Family Templates\English_I\";
-		public static readonly String ResourceNameSpace = @"Drone_Base.Resources";
+		public static readonly String ResourceNameSpace = @"RevitMyDrone.DroneBase.Resources";
 	}
 
 	public class StartUpApp : IExternalApplication
@@ -30,15 +30,15 @@ namespace Drone_Base.StartUp
 			BitmapImage largeIcon = GetEmbeddedImageResource("iconLarge.png");
 			BitmapImage smallIcon = GetEmbeddedImageResource("iconSmall.png");
 
-			PushButtonData newCommandPushButtonData = new PushButtonData(
-					"NewCommandButton", //name of the button
-					"NewCommand", //text on the button
+			PushButtonData getShotsCommandPushButtonData = new PushButtonData(
+					"GetShotsButton", //name of the button
+					"Get Shots", //text on the button
 					FileLocations.AddInDirectory + FileLocations.AssemblyName + ".dll",
-					"Drone_Base.Commands.NewCommand");
-			newCommandPushButtonData.LargeImage = largeIcon;
+					"RevitMyDrone.DroneBase.Commands.GetShotsCommand");
+			getShotsCommandPushButtonData.LargeImage = largeIcon;
 
-			RibbonPanel newAddInRibbonPanel = application.CreateRibbonPanel("NewAddIn");
-			newAddInRibbonPanel.AddItem(newCommandPushButtonData);
+			RibbonPanel DroneBaseRibbonPanel = application.CreateRibbonPanel("DroneBase");
+			DroneBaseRibbonPanel.AddItem(getShotsCommandPushButtonData);
 
 			return Result.Succeeded;
 		}

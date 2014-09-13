@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<RevitAddIns>
+  <AddIn Type="Command">
+    <Assembly>"C:\ProgramData\AutoDesk\Revit\AddIns\2014\DroneBase\DroneBase.dll"</Assembly>
+    <AddInId>f59b286e-49d1-43ce-8b8a-c79729ae2d68</AddInId>
+    <FullClassName>RevitMyDrone.DroneBase.Commands.GetShotsCommand</FullClassName>
+    <Text>Get Path</Text>
+    <VendorId>TSRA</VendorId>
+    <VendorDescription>Doug Klassen</VendorDescription>
+  </AddIn>
+  <AddIn Type="Application">
+    <Name>DroneBaseStartUp</Name>
+    <Assembly>C:\ProgramData\AutoDesk\Revit\AddIns\2014\DroneBase\DroneBase.dll</Assembly>
+    <AddInId>989cd07c-b9f2-44db-aa10-040cfd042da8</AddInId>
+    <FullClassName>RevitMyDrone.DroneBase.StartUpApp</FullClassName>
+    <VendorId>TSRA</VendorId>
+    <VendorDescription>Doug Klassen</VendorDescription>
+  </AddIn>
+</RevitAddIns>
