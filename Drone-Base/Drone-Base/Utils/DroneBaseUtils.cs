@@ -9,7 +9,10 @@ using System.Text.RegularExpressions;
 
 namespace RevitMyDrone.DroneBase.Utils
 {
-	public static class DroneBaseUtils
+	/// <summary>
+	/// utilities for managing drone info in the Revit model
+	/// </summary>
+	public static class DroneUtils
 	{
 		private static Regex droneViewRegex = new Regex(@"^DRONE_(?<index>\d?\d\d)$");
 
@@ -27,6 +30,40 @@ namespace RevitMyDrone.DroneBase.Utils
 				.ToList();
 
 			return droneViews;
+		}
+
+		/// <summary>
+		/// Retrieve the base point in the model that is geolocated by the SiteLocation of the project
+		/// todo: ensure that the correct base point is returned when there are multiple
+		/// </summary>
+		public static BasePoint GetGeoLocatedBasePoint(this Document dbDoc)
+		{
+			//just find the basepoint that's furthest from the origin
+			BasePoint bp = new FilteredElementCollector(dbDoc)
+				.OfClass(typeof(BasePoint))
+				.AsEnumerable()
+				.Cast<BasePoint>()
+				.OrderBy(p => p.GetBasePointXYZ().X + p.GetBasePointXYZ().Y)
+				.Last();
+
+			return bp;
+		}
+
+		public static XYZ GetBasePointXYZ(this BasePoint bp)
+		{
+			Parameter p;
+			p = bp.get_Parameter("E/W");
+			Double xCoord = p.AsDouble();
+			p = bp.get_Parameter("N/S");
+			Double yCoord = p.AsDouble();
+			p = bp.get_Parameter("Elev");
+			Double zCoord = p.AsDouble();
+			return new XYZ(xCoord, yCoord, zCoord);
+		}
+
+		public static Double RadToDegrees(Double inRads)
+		{
+			return 360 * (inRads / (2 * Math.PI));
 		}
 	}
 }
