@@ -32,12 +32,12 @@ namespace RevitMyDrone.DroneBase
 
 			PushButtonData getShotsCommandPushButtonData = new PushButtonData(
 					"GetShotsButton", //name of the button
-					"Get Shots", //text on the button
+					"Drone Mission", //text on the button
 					FileLocations.AddInDirectory + FileLocations.AssemblyName + ".dll",
 					"RevitMyDrone.DroneBase.Commands.GetShotsCommand");
 			getShotsCommandPushButtonData.LargeImage = largeIcon;
 
-			RibbonPanel DroneBaseRibbonPanel = application.CreateRibbonPanel("DroneBase");
+			RibbonPanel DroneBaseRibbonPanel = application.CreateRibbonPanel("Revit-My-Drone");
 			DroneBaseRibbonPanel.AddItem(getShotsCommandPushButtonData);
 
 			return Result.Succeeded;
