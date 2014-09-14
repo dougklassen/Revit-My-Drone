@@ -37,23 +37,32 @@ namespace RevitMyDrone.DroneBase.Models
 		{
 			get
 			{
-				return 0;
+				return definingView.GetCameraElevation();
 			}
 		}
 
 		public Double RoiLatitude
 		{
-			get;
+			get
+			{
+				return definingView.GetRoiLatitude();
+			}
 		}
 
 		public Double RoiLongitude
 		{
-			get;
+			get
+			{
+				return definingView.GetRoiLongitude();
+			}
 		}
 
 		public Double RoiAltitude
 		{
-			get;
+			get
+			{
+				return definingView.GetRoiElevation();
+			}
 		}
 
 		public DroneShot(View3D dView3DParam)

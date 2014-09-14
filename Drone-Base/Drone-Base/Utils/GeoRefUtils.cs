@@ -21,24 +21,66 @@ namespace RevitMyDrone.DroneBase.Utils
 
 		public static Double GetCameraLongitude(this View3D definingView)
 		{
-			Double longitude = 0;
-
-			return longitude;
+			Document dbDoc = definingView.Document;
+			return GetLongitude(definingView.Origin, dbDoc);
 		}
 
-		public static Double GetCameraElevation()
+		public static Double GetCameraElevation(this View3D definingView)
 		{
-			Double elevation = 0;
-
-			return elevation;
+			return definingView.Origin.Z;
 		}
 
-		private static Double GetLatitude(XYZ xyz, Document dbDoc)
+		public static Double GetRoiLatitude(this View3D definingView)
+		{
+			Document dbDoc = definingView.Document;
+			//ViewDirection is normalized vector, we will multiply so ROI is 50 feet away
+			XYZ roiXYZ = new XYZ(
+				definingView.Origin.X - definingView.ViewDirection.X * 50,
+				definingView.Origin.Y - definingView.ViewDirection.Y * 50,
+				definingView.Origin.Z - definingView.ViewDirection.Z * 50);
+			return GetLatitude(roiXYZ, dbDoc);
+		}
+
+		public static Double GetRoiLongitude(this View3D definingView)
+		{
+			Document dbDoc = definingView.Document;
+			//ViewDirection is normalized vector, we will multiply so ROI is 50 feet away
+			XYZ roiXYZ = new XYZ(
+				definingView.Origin.X - definingView.ViewDirection.X * 50,
+				definingView.Origin.Y - definingView.ViewDirection.Y * 50,
+				definingView.Origin.Z - definingView.ViewDirection.Z * 50);
+			return GetLongitude(roiXYZ, dbDoc);
+		}
+
+		public static Double GetRoiElevation(this View3D definingView)
+		{
+			Document dbDoc = definingView.Document;
+			//ViewDirection is normalized vector, we will multiply so ROI is 50 feet away
+			XYZ roiXYZ = new XYZ(
+				definingView.Origin.X - definingView.ViewDirection.X * 50,
+				definingView.Origin.Y - definingView.ViewDirection.Y * 50,
+				definingView.Origin.Z - definingView.ViewDirection.Z * 50);
+			return roiXYZ.Z;
+		}
+
+		private static Double GetLatitude(XYZ projCoordsXYZ, Document dbDoc)
 		{		
-			Double latitude = 0;
+			Double latitude;
 			Double baseLatitude = DroneUtils.RadToDegrees(dbDoc.SiteLocation.Latitude);
+			XYZ baseCoordsXYZ = TransformToBasePointCoords(projCoordsXYZ, dbDoc);
+			latitude = baseLatitude + DroneUtils.FeetToLatitude(baseCoordsXYZ.Y, baseLatitude);
 
 			return latitude;
+		}
+
+		private static Double GetLongitude(XYZ projCoordXYZ, Document dbDoc)
+		{
+			Double longitude;
+			Double baseLongitude = DroneUtils.RadToDegrees(dbDoc.SiteLocation.Longitude);
+			XYZ baseCoordsXYZ = TransformToBasePointCoords(projCoordXYZ, dbDoc);
+			longitude = baseLongitude + DroneUtils.FeetToLongitude(baseCoordsXYZ.X, baseLongitude);
+
+			return longitude;
 		}
 
 		private static XYZ TransformToBasePointCoords(XYZ coords, Document dbDoc)
