@@ -2,6 +2,7 @@
 using Autodesk.Revit.UI;
 
 using RevitMyDrone.DroneBase.Utils;
+using RevitMyDrone.DroneBase.Models;
 
 using System;
 using System.Collections.Generic;
@@ -18,15 +19,21 @@ namespace RevitMyDrone.DroneBase.Commands
 			UIDocument uiDoc = commandData.Application.ActiveUIDocument;
 			Document dbDoc = commandData.Application.ActiveUIDocument.Document;
 
-			IEnumerable<View3D> droneViews = dbDoc.GetDroneViews();
+			IList<View3D> droneViews = dbDoc.GetDroneViews();
+			List<DroneShot> shots = new List<DroneShot>();
+			foreach(View3D v in droneViews)
+			{
+				shots.Add(new DroneShot(v));
+			}
 
 			StringBuilder msg = new StringBuilder();
 
 			if (droneViews.Count() > 0)
 			{
-				foreach (View3D shot in droneViews)
+				foreach (DroneShot s in shots)
 				{
-					msg.AppendLine(shot.Name);
+					msg.AppendLine();
+					msg.AppendLine(s.GetDesc());
 				}
 
 				TaskDialog.Show("Found shots", msg.ToString()); 

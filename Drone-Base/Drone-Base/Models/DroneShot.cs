@@ -17,6 +17,14 @@ namespace RevitMyDrone.DroneBase.Models
 	{
 		private View3D definingView;
 
+		public String Name
+		{
+			get
+			{
+				return definingView.Name;
+			}
+		}
+
 		public Double CameraLatitude
 		{
 			get
@@ -68,6 +76,17 @@ namespace RevitMyDrone.DroneBase.Models
 		public DroneShot(View3D dView3DParam)
 		{
 			definingView = dView3DParam;
+		}
+
+		public String GetDesc()
+		{
+			StringBuilder desc = new StringBuilder();
+
+			desc.AppendFormat("***** {0}", Name);
+			desc.AppendFormat("\nCam Lat: {0}\nCam Long: {1}\nCam Alt: {2}", CameraLatitude, CameraLongitude, CameraAltitude);
+			desc.AppendFormat("\nROI Lat: {0}\nROI Long: {1}\nROI Alt: {2}", RoiLatitude, RoiLongitude, RoiAltitude);
+
+			return desc.ToString();
 		}
 	}
 }
