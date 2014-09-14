@@ -59,6 +59,7 @@
     <Compile Include="Commands\GetShotsCommand.cs" />
     <Compile Include="Models\DroneMission.cs" />
     <Compile Include="Models\DroneShot.cs" />
+    <Compile Include="Models\DroneWaypoint.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -29,7 +29,8 @@ namespace RevitMyDrone.DroneBase.Models
 		{
 			get
 			{
-				return definingView.GetCameraLatitude();
+				Document dbDoc = definingView.Document;
+				return GeoRefUtils.GetLatitude(definingView.Origin, dbDoc);
 			}
 		}
 
@@ -37,7 +38,8 @@ namespace RevitMyDrone.DroneBase.Models
 		{
 			get
 			{
-				return definingView.GetCameraLongitude();
+				Document dbDoc = definingView.Document;
+				return GeoRefUtils.GetLongitude(definingView.Origin, dbDoc);
 			}
 		}
 
@@ -45,7 +47,8 @@ namespace RevitMyDrone.DroneBase.Models
 		{
 			get
 			{
-				return definingView.GetCameraElevation();
+				Document dbDoc = definingView.Document;
+				return GeoRefUtils.GetAltitude(definingView.Origin, dbDoc);
 			}
 		}
 
@@ -53,7 +56,13 @@ namespace RevitMyDrone.DroneBase.Models
 		{
 			get
 			{
-				return definingView.GetRoiLatitude();
+				Document dbDoc = definingView.Document;
+				//ViewDirection is normalized vector, we will multiply so ROI is 50 feet away
+				XYZ roiXYZ = new XYZ(
+					definingView.Origin.X - definingView.ViewDirection.X * 50,
+					definingView.Origin.Y - definingView.ViewDirection.Y * 50,
+					definingView.Origin.Z - definingView.ViewDirection.Z * 50);
+				return GeoRefUtils.GetLatitude(roiXYZ, dbDoc); ;
 			}
 		}
 
@@ -61,7 +70,13 @@ namespace RevitMyDrone.DroneBase.Models
 		{
 			get
 			{
-				return definingView.GetRoiLongitude();
+			Document dbDoc = definingView.Document;
+			//ViewDirection is normalized vector, we will multiply so ROI is 50 feet away
+			XYZ roiXYZ = new XYZ(
+				definingView.Origin.X - definingView.ViewDirection.X * 50,
+				definingView.Origin.Y - definingView.ViewDirection.Y * 50,
+				definingView.Origin.Z - definingView.ViewDirection.Z * 50);
+			return GeoRefUtils.GetLongitude(roiXYZ, dbDoc);
 			}
 		}
 
@@ -69,7 +84,13 @@ namespace RevitMyDrone.DroneBase.Models
 		{
 			get
 			{
-				return definingView.GetRoiElevation();
+				Document dbDoc = definingView.Document;
+				//ViewDirection is normalized vector, we will multiply so ROI is 50 feet away
+				XYZ roiXYZ = new XYZ(
+					definingView.Origin.X - definingView.ViewDirection.X * 50,
+					definingView.Origin.Y - definingView.ViewDirection.Y * 50,
+					definingView.Origin.Z - definingView.ViewDirection.Z * 50);
+				return GeoRefUtils.GetAltitude(roiXYZ, dbDoc);
 			}
 		}
 

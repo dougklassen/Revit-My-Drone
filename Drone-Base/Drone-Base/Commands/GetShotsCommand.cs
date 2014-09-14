@@ -30,7 +30,10 @@ namespace RevitMyDrone.DroneBase.Commands
 
 			DroneMission mission = new DroneMission(droneViews);
 
-			TaskDialog.Show("Mission Plan", mission.GetDescription());
+			TaskDialog.Show("Mission Plan", mission.GetDescription() + "\n*****\nNext, pick a home location");
+
+			XYZ homeBase = uiDoc.Selection.PickPoint("Choose a home base");
+			mission.Home = new DroneWaypoint(homeBase, dbDoc);
 
 			SaveFileDialog saveDlg = new SaveFileDialog();
 			saveDlg.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
