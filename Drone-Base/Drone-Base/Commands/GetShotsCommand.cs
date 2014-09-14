@@ -6,8 +6,10 @@ using RevitMyDrone.DroneBase.Models;
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace RevitMyDrone.DroneBase.Commands
 {
@@ -20,27 +22,34 @@ namespace RevitMyDrone.DroneBase.Commands
 			Document dbDoc = commandData.Application.ActiveUIDocument.Document;
 
 			IList<View3D> droneViews = dbDoc.GetDroneViews();
-			List<DroneShot> shots = new List<DroneShot>();
-			foreach(View3D v in droneViews)
-			{
-				shots.Add(new DroneShot(v));
-			}
-
-			StringBuilder msg = new StringBuilder();
-
-			if (droneViews.Count() > 0)
-			{
-				foreach (DroneShot s in shots)
-				{
-					msg.AppendLine();
-					msg.AppendLine(s.GetDesc());
-				}
-
-				TaskDialog.Show("Found shots", msg.ToString()); 
-			}
-			else
+			if (0 == droneViews.Count())
 			{
 				TaskDialog.Show("Found shots", "No Drone shots found");
+				return Result.Failed;
+			}
+
+			DroneMission mission = new DroneMission(droneViews);
+
+			TaskDialog.Show("Mission Plan", mission.GetDescription());
+
+			SaveFileDialog saveDlg = new SaveFileDialog();
+			saveDlg.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
+			DialogResult result = saveDlg.ShowDialog();
+			if (DialogResult.Cancel == result)
+			{
+				return Result.Cancelled;
+			}
+
+			try
+			{
+				using(StreamWriter sw = new StreamWriter(saveDlg.FileName))
+				{
+					sw.Write(mission.GetMissionCommandList());
+				}
+			}
+			catch (Exception)
+			{
+				TaskDialog.Show("Error", "Could not write " + saveDlg.FileName);
 				return Result.Failed;
 			}
 
